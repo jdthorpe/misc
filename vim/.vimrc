@@ -196,18 +196,6 @@ cab eclim !open /Applications/eclipse/eclimd
 " STOP THE SERVER
 cab noeclim ShutdownEclim
 
-" abbreviation for :noautocmd vimgrep
-:cnoremap vg <C-R>=VG()<CR>
-function VG()
-    let cmdtype = getcmdtype()
-    if cmdtype == ':'
-        " Perform Ex command map action
-                                return "noautocmd vimgrep"
-                else
-                                return "vg"
-    endif
-endfunction
-
 " ECLIM OPTIONS 
 " for details see -  https://groups.google.com/forum/#!topic/eclim-user/QdamHqsV0YI 
 " or - :h 'completeopt'
@@ -215,16 +203,28 @@ set completeopt=menuone,longest
 
 
 
+"--------------------------------------------------
 " FIILETYPE SPECIFIC SHORTCUT FOR VIMGREP 
-nnoremap <c-o> :vimgrep // <C-R>=b:search_ext<CR><left><left><left><left><left><left><left><left><left><left>
+"--------------------------------------------------
+nnoremap ? :noautocmd vimgrep // <C-R>=b:search_ext<CR><left><left><left><left><left><left><left><left><left><left>
+
+"-- " abbreviation for :noautocmd vimgrep
+"-- :cnoremap vg <C-R>=VG()<CR>
+"-- function VG()
+"--     let cmdtype = getcmdtype()
+"--     if cmdtype == ':'
+"--         " Perform Ex command map action
+"--         return "noautocmd vimgrep"
+"--     else
+"--         return "vg"
+"--     endif
+"-- endfunction
 
 "--------------------------------------------------
 " filetype specific header comment
 "--------------------------------------------------
 " Standard 
 nnoremap <a-6> ggO<C-R>=b:comment_leader<CR> <esc>80a-<esc>o<C-R>=b:comment_leader<CR> Programmer: Jason Thorpe<esc>o<C-R>=b:comment_leader<CR> Date        <esc>:r !date<CR>kkJJo<C-R>=b:comment_leader<CR> Language:   <C-R>=b:fileType<CR><esc>o<C-R>=b:comment_leader<CR> Purpose:    <esc>o<C-R>=b:comment_leader<CR> Comments:   <esc>o<C-R>=b:comment_leader<CR> <esc>80a-<esc>j
-
-
 
 "--------------------------------------------------
 " FAST CODE COMMENTING 
@@ -361,7 +361,6 @@ if !exists("autocommands_loaded")
     au FileType '' let b:comment_search_leader_long = '#-- ' 
     au FileType '' let b:comment_leader = '#' 
     au FileType '' let b:comment_leader_long = '#-- ' 
-    au FileType '' let b:search_ext = '**/*.r  ' 
 
     " comment string  == '//'
     au FileType java,html,javascript,typescript,css let b:comment_search_leader = '\/\/' 
@@ -372,13 +371,12 @@ if !exists("autocommands_loaded")
     au FileType java,html,javascript,typescript,css let b:comment_leader_qc = '\/\/' 
 
     " FoxPro
-    "au FileType vfp8 let b:comment_search_leader = '\*' 
-    "au FileType vfp8 let b:comment_search_leader_long = '\*!\* ' 
-    "au FileType vfp8 let b:comment_search_leader_qc = '\*qc\*' 
-    "au FileType vfp8 let b:comment_leader = '*' 
-    "au FileType vfp8 let b:comment_leader_long = '*!* ' 
-    "au FileType vfp8 let b:comment_leader_qc = '*qc*' 
-    "au FileType vfp8 let b:search_ext = '**/*.prg' 
+    au FileType vfp8 let b:comment_search_leader = '\*' 
+    au FileType vfp8 let b:comment_search_leader_long = '\*!\* ' 
+    au FileType vfp8 let b:comment_search_leader_qc = '\*qc\*' 
+    au FileType vfp8 let b:comment_leader = '*' 
+    au FileType vfp8 let b:comment_leader_long = '*!* ' 
+    au FileType vfp8 let b:comment_leader_qc = '*qc*' 
 
     " set comment character according to filetype 
     " comment string  == '%'
@@ -407,8 +405,6 @@ if !exists("autocommands_loaded")
     au FileType sh,make,r,python let b:comment_leader = '#' 
     au FileType sh,make,r,python let b:comment_leader_long = '#-- ' 
     au FileType sh,make,r,python let b:comment_leader_qc = '#qc-' 
-    au FileType python let b:search_ext = '**/*.py ' 
-    au FileType r let b:search_ext = '**/*.r  ' 
 
     " comment character  == ';'
 
@@ -439,6 +435,20 @@ if !exists("autocommands_loaded")
 	au FileType python let b:fileType = 'Python (.py) Version 2.7' 
 	au FileType sh let b:fileType = 'sh' 
 	au FileType autohotkey let b:fileType = 'AutoHotKey (.ahk)' 
+
+	"--------------------------------------------------
+	" FIILETYPE SPECIFIC SHORTCUT FOR VIMGREP 
+	"--------------------------------------------------
+	au FileType '' let b:search_ext = '**/*.FOO' 
+	au FileType vfp8 let b:search_ext = '**/*.prg' 
+	au FileType python let b:search_ext = '**/*.py ' 
+	au FileType r let b:search_ext = '**/*.r  ' 
+	au FileType vim let b:search_ext = '**/*.vim' 
+	au FileType java let b:search_ext = '**/*.vim' 
+	au FileType html let b:search_ext = '**/*.html' 
+	au FileType javascript let b:search_ext = '**/*.js' 
+	au FileType typescript let b:search_ext = '**/*.ts' 
+	au FileType css let b:search_ext = '**/*.css' 
 
 endif
 
