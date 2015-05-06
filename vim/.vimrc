@@ -4,7 +4,7 @@
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " for lack of another handy place to put 'em, here are the zencoding shortcuts:
 " each shortcut is preceded by a <C-Y> 
-" 
+"
 " COMMA (insert mode) : Expand Abbreviation
 " COMMA (visual Mode) : Wrap with abbreviation (abbreviation supplied at the "Tag:" prompt)
 " n : next insertion point
@@ -25,16 +25,18 @@
 " --------------------------------------------------
 
 if substitute(system('uname'), "\n", "", "") == "Darwin"
-	cd ~/Dev/
+    cd ~/Dev/
 
-	" START A NEW R SESSION (OSX ONLY?)
-	" cab newR !open -n /Applications/r.app
-	cab newR !open -n "/Applications/Revolution R Open.app"
+    " START A NEW R SESSION (OSX ONLY?)
+    " cab newR !open -n /Applications/r.app
+    cab newR !open -n "/Applications/Revolution R Open.app"
+
+    let g:vimrplugin_term = "/Applications/Utilities/Terminal.app/Contents/MacOS/Terminal"
 
 else
 
-	set shell=%SystemRoot%\system32\WindowsPowerShell\v1.0\powershell.exe
-	cd h:\
+    set shell=%SystemRoot%\system32\WindowsPowerShell\v1.0\powershell.exe
+    cd h:\
 
 endif 
 
@@ -96,8 +98,6 @@ set ve=block
 "-- " SET A DIRECTORY TO STORE THE UNDO HISTORY
 "-- set undodir=h:/vimUndo/
 
-
-let g:vimrplugin_term = "/Applications/Utilities/Terminal.app/Contents/MacOS/Terminal"
 
 
 "--------------------------------------------------
@@ -218,22 +218,11 @@ set completeopt=menuone,longest
 " FIILETYPE SPECIFIC SHORTCUT FOR VIMGREP 
 nnoremap <c-o> :vimgrep // <C-R>=b:search_ext<CR><left><left><left><left><left><left><left><left><left><left>
 
+"--------------------------------------------------
+" filetype specific header comment
+"--------------------------------------------------
 " Standard 
 nnoremap <a-6> ggO<C-R>=b:comment_leader<CR> <esc>80a-<esc>o<C-R>=b:comment_leader<CR> Programmer: Jason Thorpe<esc>o<C-R>=b:comment_leader<CR> Date        <esc>:r !date<CR>kkJJo<C-R>=b:comment_leader<CR> Language:   <C-R>=b:fileType<CR><esc>o<C-R>=b:comment_leader<CR> Purpose:    <esc>o<C-R>=b:comment_leader<CR> Comments:   <esc>o<C-R>=b:comment_leader<CR> <esc>80a-<esc>j
-
-" BUFFER FILE TYPE VARIABLES 
-au FileType '' let b:fileType = 'Unknown' 
-au FileType html let b:fileType = 'html' 
-au FileType javascript let b:fileType = 'javascript' 
-au FileType typescript let b:fileType = 'typescript' 
-au FileType css let b:fileType = 'css' 
-au FileType java let b:fileType = 'java' 
-"au FileType vfp8 let b:fileType = 'VisualFoxPro (.prg) Version 9' 
-au FileType vim let b:fileType = 'vim' 
-au FileType r,*.r,*.site,.Rprofile let b:fileType = 'R (.r) Version 3.1.x' 
-au FileType python let b:fileType = 'Python (.py) Version 2.7' 
-au FileType sh let b:fileType = 'sh' 
-au FileType autohotkey let b:fileType = 'AutoHotKey (.ahk)' 
 
 
 
@@ -242,55 +231,137 @@ au FileType autohotkey let b:fileType = 'AutoHotKey (.ahk)'
 "--------------------------------------------------
 
 if substitute(system('uname'), "\n", "", "") == "Darwin"
-	
-	" note that on the mac goldtough the <d-3> key is 
-	" where the <a-1> key is on the windows goldtouch
+    
+    " note that on the mac goldtough the <d-3> key is 
+    " where the <a-1> key is on the windows goldtouch
 
-	nnoremap <d-1> :s/^<C-R>=b:comment_leader_long<CR>//e<CR>:nohls<cr>k
-	nnoremap <d-2> :s/^<C-R>=b:comment_leader<CR>//e<CR>:nohls<cr>k
-	nnoremap <d-3> :s/^/<C-R>=b:comment_leader<CR>/e<CR>:nohls<cr>j
-	nnoremap <d-4> :s/^/<C-R>=b:comment_leader_long<CR>/e<CR>:nohls<cr>j
+    nnoremap <d-1> :s/^<C-R>=b:comment_leader_long<CR>//e<CR>:nohls<cr>k
+    nnoremap <d-2> :s/^<C-R>=b:comment_leader<CR>//e<CR>:nohls<cr>k
+    nnoremap <d-3> :s/^/<C-R>=b:comment_leader<CR>/e<CR>:nohls<cr>j
+    nnoremap <d-4> :s/^/<C-R>=b:comment_leader_long<CR>/e<CR>:nohls<cr>j
 
-	vnoremap <d-1> :s/^<C-R>=b:comment_leader_long<CR>//e<CR>:nohls<cr>
-	vnoremap <d-2> :s/^<C-R>=b:comment_leader<CR>//e<CR>:nohls<cr>
-	vnoremap <d-3> :s/^\(.\)/<C-R>=b:comment_leader<CR>\1/e<CR>:nohls<cr>
-	vnoremap <d-4> :s/^\(.\)/<C-R>=b:comment_leader_long<CR>\1/e<CR>:nohls<cr>
+    vnoremap <d-1> :s/^<C-R>=b:comment_leader_long<CR>//e<CR>:nohls<cr>
+    vnoremap <d-2> :s/^<C-R>=b:comment_leader<CR>//e<CR>:nohls<cr>
+    vnoremap <d-3> :s/^\(.\)/<C-R>=b:comment_leader<CR>\1/e<CR>:nohls<cr>
+    vnoremap <d-4> :s/^\(.\)/<C-R>=b:comment_leader_long<CR>\1/e<CR>:nohls<cr>
 
-	" THIS COMMENTS OUT BLANK LINES AS WELL
-	vnoremap <d-5> :s/^/<C-R>=b:comment_search_leader_long<CR>/e<cr>/<Up><Up><esc>:nohls<CR>
+    " THIS COMMENTS OUT BLANK LINES AS WELL
+    vnoremap <d-5> :s/^/<C-R>=b:comment_search_leader_long<CR>/e<cr>/<Up><Up><esc>:nohls<CR>
 
 else 
 
-	" CONSIDER
-	"nnoremap <d-3> :s/^\(.\)/<C-R>=b:comment_leader<CR>\1/e<CR>:nohls<cr>j
-	" INSTEAD OF 
-	"nnoremap <d-3> :s/^/<C-R>=b:comment_leader<CR>/e<CR>:nohls<cr>j
+    " CONSIDER
+    "nnoremap <d-3> :s/^\(.\)/<C-R>=b:comment_leader<CR>\1/e<CR>:nohls<cr>j
+    " INSTEAD OF 
+    "nnoremap <d-3> :s/^/<C-R>=b:comment_leader<CR>/e<CR>:nohls<cr>j
 
-	"nnoremap <a-1> :s/^<C-R>=b:comment_search_leader_long<CR>//e<cr>/<Up><Up><esc>k:nohls<CR>
-	"nnoremap <a-1> V:s/^<C-R>=b:comment_search_leader_long<CR>//e<cr>/<Up><Up><esc>:nohls<CR>``
-	"nnoremap <a-2> :s/^<C-R>=b:comment_search_leader<CR>//e<cr>/<Up><Up><esc>k:nohls<CR>
-	nnoremap <a-3> 0i<C-R>=b:comment_leader<CR><esc>j
-	nnoremap <a-4> 0i<C-R>=b:comment_leader_long<CR><esc>j
+    "nnoremap <a-1> :s/^<C-R>=b:comment_search_leader_long<CR>//e<cr>/<Up><Up><esc>k:nohls<CR>
+    "nnoremap <a-1> V:s/^<C-R>=b:comment_search_leader_long<CR>//e<cr>/<Up><Up><esc>:nohls<CR>``
+    "nnoremap <a-2> :s/^<C-R>=b:comment_search_leader<CR>//e<cr>/<Up><Up><esc>k:nohls<CR>
+    nnoremap <a-3> 0i<C-R>=b:comment_leader<CR><esc>j
+    nnoremap <a-4> 0i<C-R>=b:comment_leader_long<CR><esc>j
 
-	vnoremap <a-1> :s/^<C-R>=b:comment_search_leader_long<CR>//e<cr>/<Up><Up><esc>:nohls<CR>``
-	vnoremap <a-2> :s/^<C-R>=b:comment_search_leader<CR>//e<cr>/<Up><Up><esc>:nohls<CR>``
-	vnoremap <a-3> :s/^\(.\+\)/<C-R>=b:comment_search_leader<CR>\1/e<cr>/<Up><Up><esc>:nohls<CR>``
-	vnoremap <a-4> :s/^\(.\+\)/<C-R>=b:comment_search_leader_long<CR>\1/e<cr>/<Up><Up><esc>:nohls<CR>``
+    vnoremap <a-1> :s/^<C-R>=b:comment_search_leader_long<CR>//e<cr>/<Up><Up><esc>:nohls<CR>``
+    vnoremap <a-2> :s/^<C-R>=b:comment_search_leader<CR>//e<cr>/<Up><Up><esc>:nohls<CR>``
+    vnoremap <a-3> :s/^\(.\+\)/<C-R>=b:comment_search_leader<CR>\1/e<cr>/<Up><Up><esc>:nohls<CR>``
+    vnoremap <a-4> :s/^\(.\+\)/<C-R>=b:comment_search_leader_long<CR>\1/e<cr>/<Up><Up><esc>:nohls<CR>``
 
-	" THIS COMMENTS OUT BLANK LINES AS WELL
-	"vnoremap <a-3> :s/^/<C-R>=b:comment_leader<CR>/e<cr>/<Up><Up><esc>:nohls<CR>
-	vnoremap <a-5> :s/^/<C-R>=b:comment_search_leader_long<CR>/e<cr>/<Up><Up><esc>:nohls<CR>
-	"vnoremap <d-q> :qas/^/<C-R>=b:comment_leader_qc<CR>/<cr>
+    " THIS COMMENTS OUT BLANK LINES AS WELL
+    "vnoremap <a-3> :s/^/<C-R>=b:comment_leader<CR>/e<cr>/<Up><Up><esc>:nohls<CR>
+    vnoremap <a-5> :s/^/<C-R>=b:comment_search_leader_long<CR>/e<cr>/<Up><Up><esc>:nohls<CR>
+    "vnoremap <d-q> :qas/^/<C-R>=b:comment_leader_qc<CR>/<cr>
 
 endif 
 
 
-	" DEFAULT SETTINGS 
-	au FileType '' let b:comment_search_leader = '#' 
-	au FileType '' let b:comment_search_leader_long = '#-- ' 
-	au FileType '' let b:comment_leader = '#' 
-	au FileType '' let b:comment_leader_long = '#-- ' 
-	au FileType '' let b:search_ext = '**/*.r  ' 
+" --------------------------------------------------
+" file read-write autocommands
+" --------------------------------------------------
+
+if !exists("autocommands_loaded")
+    let autocommands_loaded = 1
+
+    "------------------------------
+    " FILE TYPES SPECIFID SETTINGS
+    "------------------------------
+
+    " GO 
+    au BufFilePost,BufRead,BufNewFile *.go setlocal filetype=go syntax=go
+    au filetype go setlocal mp=6g\ %
+
+    " FOXPRO 
+    " au BufFilePost,BufRead,BufNewFile  *.rmd setlocal filetype=markdown syntax=markdown
+
+    " AutoHotKey
+    au BufFilePost,BufRead,BufNewFile *.ahk setlocal syntax=autohotkey filetype=autohotkey 
+    
+    " R
+    au BufFilePost,BufRead,BufNewFile *.r setlocal syntax=r filetype=r foldmethod=marker
+    au BufFilePost,BufRead,BufNewFile *.rfmt setlocal syntax=r filetype=r foldmethod=marker
+    "au BufFilePost,BufRead,BufNewFile *.rd setlocal syntax=r filetype=r foldmethod=marker
+    au BufFilePost,BufRead,BufNewFile .Rprofile setlocal syntax=r filetype=r foldmethod=marker
+    " NOTE TO SELF the default for foldmethod is 'manual'
+
+    "Web stuff
+    au BufRead,BufNewFile *.html setlocal tabstop=4 expandtab shiftwidth=4 softtabstop=4 syntax=html filetype=html
+    au BufRead,BufNewFile *.css setlocal tabstop=4 expandtab shiftwidth=4 softtabstop=4 syntax=css filetype=css
+    au BufRead,BufNewFile *.js setlocal tabstop=4 expandtab shiftwidth=4 softtabstop=4 syntax=javascript filetype=javascript
+    au BufRead,BufNewFile *.js setlocal tabstop=4 expandtab shiftwidth=4 softtabstop=4 syntax=javascript filetype=javascript
+
+    " MARKDOWN 
+    au BufFilePost,BufRead,BufNewFile *.md setlocal filetype=markdown syntax=markdown
+    
+    "PYTHON 
+    au BufFilePost,BufRead,BufNewFile *.py setlocal tabstop=4 expandtab shiftwidth=4 softtabstop=4 syntax=python filetype=python
+
+    "------------------------------
+    " ENABLE LOG WRITERS
+    "------------------------------
+    au BufWritePre *.py call AppendToWriteLog( )
+    au BufWritePre *.r call AppendToWriteLog( )
+    au BufWritePre *.prg call AppendToWriteLog( )
+
+    "------------------------------
+    " FILE TYPE SPECIFIC MAPPINGS
+    "------------------------------
+
+    " MAPPINGS FOR typescritp
+    au FileType typescript  :inoremap <buffer> >> =>
+
+    " MAPPINGS FOR R 
+    au FileType r inoremap <buffer> nid if(!inherits(data[,'denrollvisit'],'Date'))
+    au FileType r iabb <buffer> _ <-
+    au FileType r iabb <buffer> >< %>%
+    au FileType r inoremap <buffer> dtos( format(as.Date(date(), "%a %b %d %H:%M:%S %Y"), "%Y%m%d")
+    au FileType r iabb <buffer> as.Date( as.Date(as.character( ),'%m/%d/%Y')
+    au FileType r inoremap <buffer> pdf( pdf( FileNameHere , width = par('din')[1],height = par('din')[2] )
+    au FileType r inoremap <buffer> pbar pb <- winProgressBar(title = "progress bar", min = 0, max = total, width = 300)<CR>setWinProgressBar(pb, i, title=paste( round(i/total*100, 0), "% done"))<CR>close(pb)
+
+    " MAPPINGS FOR SuperTab
+    au FileType java,python let b:SuperTabDefaultCompletionType = '<c-x><c-u>'
+
+    "-----------------------------------
+    " MAC VIM GOES CRAZY WHEN FF=MAC
+    "-----------------------------------
+    " this comes last because I want the other changes to occure even if this fails due to ':set noma'
+    au FileType r set ff=unix 
+    au FileType python set ff=unix 
+
+    "-----------------------------------
+    " VIM (NETRW)
+    "-----------------------------------
+    au FileType pi_netrw.txt nnoremap L <c-l>
+
+    "--------------------------------------------------
+    " Buffer variables for FAST CODE COMMENTING 
+    "--------------------------------------------------
+
+    " DEFAULT SETTINGS 
+    au FileType '' let b:comment_search_leader = '#' 
+    au FileType '' let b:comment_search_leader_long = '#-- ' 
+    au FileType '' let b:comment_leader = '#' 
+    au FileType '' let b:comment_leader_long = '#-- ' 
+    au FileType '' let b:search_ext = '**/*.r  ' 
 
     " comment string  == '//'
     au FileType java,html,javascript,typescript,css let b:comment_search_leader = '\/\/' 
@@ -300,7 +371,7 @@ endif
     au FileType java,html,javascript,typescript,css let b:comment_leader_long = '\/\/-- ' 
     au FileType java,html,javascript,typescript,css let b:comment_leader_qc = '\/\/' 
 
-	" FoxPro
+    " FoxPro
     "au FileType vfp8 let b:comment_search_leader = '\*' 
     "au FileType vfp8 let b:comment_search_leader_long = '\*!\* ' 
     "au FileType vfp8 let b:comment_search_leader_qc = '\*qc\*' 
@@ -351,89 +422,23 @@ endif
     " automatically reload vimrc when it's saved
     " not sure this is such a good idea
 "    au BufWritePost _vimrc so ~/_vimrc
+    " -----------------------------------------------------------------
 
-
-" --------------------------------------------------
-" file read-write autocommands
-" --------------------------------------------------
-
-if !exists("autocommands_loaded")
-	let autocommands_loaded = 1
-
-	"------------------------------
-	" FILE TYPES SPECIFID SETTINGS
-	"------------------------------
-
-	" GO 
-    au BufFilePost,BufRead,BufNewFile *.go setlocal filetype=go syntax=go
-	au filetype go setlocal mp=6g\ %
-
-	" FOXPRO 
-    " au BufFilePost,BufRead,BufNewFile  *.rmd setlocal filetype=markdown syntax=markdown
-
-	" AutoHotKey
-    au BufFilePost,BufRead,BufNewFile *.ahk setlocal syntax=autohotkey filetype=autohotkey 
-	
-	" R
-    au BufFilePost,BufRead,BufNewFile *.r setlocal syntax=r filetype=r foldmethod=marker
-    au BufFilePost,BufRead,BufNewFile *.rfmt setlocal syntax=r filetype=r foldmethod=marker
-    "au BufFilePost,BufRead,BufNewFile *.rd setlocal syntax=r filetype=r foldmethod=marker
-    au BufFilePost,BufRead,BufNewFile .Rprofile setlocal syntax=r filetype=r foldmethod=marker
-    " NOTE TO SELF the default for foldmethod is 'manual'
-
-	"Web stuff
-	au BufRead,BufNewFile *.html setlocal tabstop=4 expandtab shiftwidth=4 softtabstop=4 syntax=html filetype=html
-	au BufRead,BufNewFile *.css setlocal tabstop=4 expandtab shiftwidth=4 softtabstop=4 syntax=css filetype=css
-	au BufRead,BufNewFile *.js setlocal tabstop=4 expandtab shiftwidth=4 softtabstop=4 syntax=javascript filetype=javascript
-	au BufRead,BufNewFile *.js setlocal tabstop=4 expandtab shiftwidth=4 softtabstop=4 syntax=javascript filetype=javascript
-
-	" MARKDOWN 
-    au BufFilePost,BufRead,BufNewFile *.md setlocal filetype=markdown syntax=markdown
-	
-	"PYTHON 
-	au BufFilePost,BufRead,BufNewFile *.py setlocal tabstop=4 expandtab shiftwidth=4 softtabstop=4 syntax=python filetype=python
-
-	"------------------------------
-	" ENABLE LOG WRITERS
-	"------------------------------
-	au BufWritePre *.py call AppendToWriteLog( )
-	au BufWritePre *.r call AppendToWriteLog( )
-	au BufWritePre *.prg call AppendToWriteLog( )
-
-	"------------------------------
-	" FILE TYPE SPECIFIC MAPPINGS
-	"------------------------------
-
-	" MAPPINGS FOR typescritp
-	au FileType typescript  :inoremap <buffer> >> =>
-
-	" MAPPINGS FOR R 
-    au FileType r inoremap <buffer> nid if(!inherits(data[,'denrollvisit'],'Date'))
-    au FileType r iabb <buffer> _ <-
-    au FileType r iabb <buffer> >< %>%
-    au FileType r inoremap <buffer> dtos( format(as.Date(date(), "%a %b %d %H:%M:%S %Y"), "%Y%m%d")
-    au FileType r iabb <buffer> as.Date( as.Date(as.character( ),'%m/%d/%Y')
-    au FileType r inoremap <buffer> pdf( pdf( FileNameHere , width = par('din')[1],height = par('din')[2] )
-    au FileType r inoremap <buffer> pbar pb <- winProgressBar(title = "progress bar", min = 0, max = total, width = 300)<CR>setWinProgressBar(pb, i, title=paste( round(i/total*100, 0), "% done"))<CR>close(pb)
-
-	" MAPPINGS FOR SuperTab
-	au FileType java,python let b:SuperTabDefaultCompletionType = '<c-x><c-u>'
-
-
-	"-----------------------------------
-	" MAC VIM GOES CRAZY WHEN FF=MAC
-	"-----------------------------------
-	" this comes last because I want the other changes to occure even if this fails due to ':set noma'
-    au FileType r set ff=unix 
-	au FileType python set ff=unix 
-
-
-
-	"-----------------------------------
-	" VIM (NETRW)
-	"-----------------------------------
-	au FileType pi_netrw.txt nnoremap L <c-l>
-
+	" --------------------------------------------------
+	" FILETYPE SPECIFIC HEADER COMMENT VARIABLES
+	" --------------------------------------------------
+	au FileType '' let b:fileType = 'Unknown' 
+	au FileType html let b:fileType = 'html' 
+	au FileType javascript let b:fileType = 'javascript' 
+	au FileType typescript let b:fileType = 'typescript' 
+	au FileType css let b:fileType = 'css' 
+	au FileType java let b:fileType = 'java' 
+	"au FileType vfp8 let b:fileType = 'VisualFoxPro (.prg) Version 9' 
+	au FileType vim let b:fileType = 'vim' 
+	au FileType r,*.r,*.site,.Rprofile let b:fileType = 'R (.r) Version 3.1.x' 
+	au FileType python let b:fileType = 'Python (.py) Version 2.7' 
+	au FileType sh let b:fileType = 'sh' 
+	au FileType autohotkey let b:fileType = 'AutoHotKey (.ahk)' 
 
 endif
 
@@ -441,14 +446,14 @@ endif
 " A FUNCTIN THAT LOGS THE CURRENT SET OF OPEN WINDOWS TO A LOCAL FILE
 
 function AppendToWriteLog( )
-"	let x = input(expand('%:p').'>')
-	let lines = [ strftime("%c").','.expand('%:p')]
-	let eventlog = expand('$VIMRUNTIME').'/writeEventLog'
-	let lasteventlog = expand('$VIMRUNTIME').'/lastWriteEvent'
-	if filewritable(eventlog)
-		call writefile(lines,lasteventlog)
-		call system("cat ".lasteventlog." >> ".eventlog)
-	endif 
+"    let x = input(expand('%:p').'>')
+    let lines = [ strftime("%c").','.expand('%:p')]
+    let eventlog = expand('$VIMRUNTIME').'/writeEventLog'
+    let lasteventlog = expand('$VIMRUNTIME').'/lastWriteEvent'
+    if filewritable(eventlog)
+        call writefile(lines,lasteventlog)
+        call system("cat ".lasteventlog." >> ".eventlog)
+    endif 
 endfunction
 
 
@@ -458,7 +463,6 @@ endfunction
 
 "records the current list of open files 
 au VimLeave,BufFilePost,BufUnload,BufDelete,BufReadPost,BufWritePost *.py,*.r,*.Rprofile,*.prg,*.txt,*.csv call RecordFiles()
-    
 
 if !exists("g:sessionid")
     let g:sessionid = strftime('%Y_%m_%d_%H_%M_%S')
@@ -543,9 +547,9 @@ endfunction
 " if !exists("autocommands_loaded")
 "     let autocommands_loaded = 1
 "     "go settings
-"     au BufRead,BufNewFile *.go		set syntax=go
-"     au BufRead,BufNewFile *.go		setlocal filetype=go
-"     au filetype go		setlocal mp=6g\ %
+"     au BufRead,BufNewFile *.go        set syntax=go
+"     au BufRead,BufNewFile *.go        setlocal filetype=go
+"     au filetype go        setlocal mp=6g\ %
 "     "python settings
 "     au BufRead,BufNewFile *.py set tabstop=8 expandtab shiftwidth=4 softtabstop=4
 " endif
