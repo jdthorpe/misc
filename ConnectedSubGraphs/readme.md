@@ -35,9 +35,12 @@ connected subgraphs should be written (one per line)
 1.  Optionally, the size of the connected sub-graphs to be identified
 
 
-## Simple examples
+## Simple Examples
 
-### examples 1: connected subsets of a small graph (a tree perhaps?)
+Note that a more complete example including the effect of connectedness on 
+running time can be found in the file `Examples.py`.
+
+### Example 1: Connected subsets of a small graph.
 
     graph = (
             ('a','e'),
@@ -61,7 +64,7 @@ connected subgraphs should be written (one per line)
     for g in getAllConnectedSets(graph,4): 
         print g
 
-### examples 2: disconnected graphs are okay
+### Example 2: Disconnected graphs are okay.
 
     graph = [
             ('A','C',),
@@ -85,7 +88,7 @@ connected subgraphs should be written (one per line)
     for s in sorted([sorted(s) for s in getAllConnectedSets(graph)]): 
         print s
 
-### Example 3: graphs with cycles are okay
+### Example 3: Graphs with cycles are okay.
 
     graph = [
             ('A','B',),
@@ -104,7 +107,7 @@ connected subgraphs should be written (one per line)
     for s in sorted(getAllConnectedSets(graph)): 
         print s
 
-### example 4: multiple cycles and complicated node names are okay
+### Example 4: Multiple cycles and complicated node names are okay.
 
     graph = [
             ('Gene A','Gene B',),
@@ -118,4 +121,9 @@ connected subgraphs should be written (one per line)
             ]
     x = getAllConnectedSets(graph)
     for s in x: print sorted(s)
+
+
+However, note that this algorithm makes use of the `==` operator with 
+the node names so using numeric node names reduces the running time 
+substantially.
 
