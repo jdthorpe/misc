@@ -1,6 +1,3 @@
-
-
-
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " for lack of another handy place to put 'em, here are the zencoding shortcuts:
 " each shortcut is preceded by a <C-Y> 
